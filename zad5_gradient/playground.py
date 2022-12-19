@@ -34,11 +34,11 @@ def init_network(topology, a_func):
 
 
 def predict(x, neurons):
-    a = x
+    output = x
     for neuron in neurons:
-        z = np.matmul(neuron[0], a)+neuron[1]
-        a = neuron[2](z)
-    return a
+        processed_input = np.matmul(neuron[0], output)+neuron[1]
+        output = neuron[2](processed_input)
+    return output
 
 
 def train(X, Y, x_test, y_test, **kwargs):
@@ -52,29 +52,29 @@ def train(X, Y, x_test, y_test, **kwargs):
             y = np.asmatrix(y_batch)
             n = x.shape[1]
             rate = -kwargs['learning_rate']/n
-            a = x
+            output = x
             layers = []
 
             for neuron in neurons:
-                z = np.matmul(neuron[0], a)+neuron[1]
-                a = neuron[2](z)
-                layers.append((z, a))
+                processed_input = np.matmul(neuron[0], output)+neuron[1]
+                output = neuron[2](processed_input)
+                layers.append((processed_input, output))
 
             back_prop = zip(reversed(layers), reversed(neurons))
-            (next_z, next_a), next_neuron = back_prop.__next__()
-            delta = np.multiply(next_a-y, next_neuron[3](next_z))
+            (next_processed_input, next_output), next_neuron = back_prop.__next__()
+            delta = np.multiply(next_output-y, next_neuron[3](next_processed_input))
             deltas = [delta]
-            for ((z, a), neuron) in back_prop:
-                delta = np.multiply(neuron[3](z), next_neuron[0].transpose().dot(delta))
+            for ((processed_input, output), neuron) in back_prop:
+                delta = np.multiply(neuron[3](processed_input), next_neuron[0].transpose().dot(delta))
                 next_neuron = neuron
                 deltas.append(delta)
 
-            prev_a = x
+            prev_output = x
             update_prop = zip(reversed(deltas), layers)
-            for i, (delta, (z, a)) in enumerate(update_prop):
-                neurons[i][0].__iadd__(rate*delta.dot(prev_a.transpose()))
+            for i, (delta, (processed_input, output)) in enumerate(update_prop):
+                neurons[i][0].__iadd__(rate*delta.dot(prev_output.transpose()))
                 neurons[i][1].__iadd__(rate*np.sum(delta, 1))
-                prev_a = a
+                prev_output = output
 
         y_predict = predict(x_test, neurons)
         mse_rate.append(np.average(np.power(y_predict-y_test, 2)))
@@ -101,10 +101,10 @@ if __name__ == '__main__':
     print(end-start)
     pd.DataFrame(mse_rate).plot(logy=True)
     aprox = pd.DataFrame(data=[
-            x_test,
-            np.asarray(predict(np.asmatrix(x_test), neurons)).reshape(-1),
-            np.apply_along_axis(func, 0, x_test)
-        ]
+        x_test,
+        np.asarray(predict(np.asmatrix(x_test), neurons)).reshape(-1),
+        np.apply_along_axis(func, 0, x_test)
+    ]
     ).transpose().sort_values(by=0)
     aprox.rename(columns={0: 'x', 1: 'y_predict', 2: 'y'}, inplace=True)
     # aprox.plot('x', ['y', 'y_predict'])

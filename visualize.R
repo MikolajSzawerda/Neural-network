@@ -1,15 +1,5 @@
-library(grid)
 library(data.table)
-library(gridExtra)
-library(grid)
-library(tidyr)
-library(dplyr)
-library(gt)
-library(gtExtras)
 library(ggplot2)
-library(ggalt)
-library(scales)
-library(ggpubr)
 
 exec_data <- fread("results/experiments.csv")
 

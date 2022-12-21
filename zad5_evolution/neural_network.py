@@ -7,7 +7,6 @@ from collections import namedtuple
 import time
 
 MatrixView = namedtuple("MatrixView", "w_a w_b w_col w_row b_a b_b")
-Layer = namedtuple("Layer", "weights biases")
 
 
 def sigmoid(x):
@@ -82,12 +81,12 @@ class EvolutionNeuralNetwork:
         predicted_results = self.predict(weights, X)
         return np.average(np.power(predicted_results - Y, 2))
 
-    def fit(self, dataset):
+    def fit(self, X, Y):
         n_of_parameters = self.bias_slice_point + sum(self.structure[1:])
         weights = \
             scipy.optimize.differential_evolution(partial(self.evaluate,
-                                                          X=np.asmatrix(dataset[:, 0]).transpose(),
-                                                          Y=np.asmatrix(dataset[:, 1]).transpose()),
+                                                          X=np.asmatrix(X).transpose(),
+                                                          Y=np.asmatrix(Y).transpose()),
                                                   popsize=1,
                                                   bounds=[(-10.0, 10.0)] * n_of_parameters,
                                                   maxiter=3000,
@@ -104,7 +103,7 @@ def main():
     y = func(x)
     dataset = np.column_stack((x, y))
     ev = EvolutionNeuralNetwork(structure)
-    weights = ev.fit(dataset)
+    weights = ev.fit(x, y)
     dataset = [([x], [func(x)]) for x in
                [random.uniform(-1.0, 1.0) for _ in range(100)]]
     data = np.array([a[0] for a in dataset])

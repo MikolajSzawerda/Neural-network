@@ -1,0 +1,3 @@
+,name,time,path,mse_path,predict_path
+0,Dupa,0.17072050699999997,test,results/test_mse.csv,results/test_predict.csv
+1,Dupa2,2.820737739,test2,results/test2_mse.csv,results/test2_predict.csv

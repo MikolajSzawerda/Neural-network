@@ -2,6 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from NeuralNetwork import NeuralNetwork
 import pandas as pd
+from experiments import experiments
+import time
 
 def orig_func(x):
     return np.power(x, 2) * np.sin(x) + 50 * np.sin(2 * x)
@@ -10,6 +12,8 @@ def orig_func(x):
 def func(x):
     return 0.005 * orig_func(10.0 * x) + 0.5
 
+def path(folder, base, exp):
+    return f'{folder}/{base}_{exp}.csv'
 
 if __name__ == '__main__':
     params = {
@@ -26,16 +30,28 @@ if __name__ == '__main__':
     split_index = int(0.7 * x.shape[0])
     x_train, x_test = x[:split_index], x[split_index:]
     y_train, y_test = y[:split_index], y[split_index:]
-    nn = NeuralNetwork(**params)
-    nn.train(x, y)
-    mse = nn.get_mse_progress(x_test, y_test)
-    pd.DataFrame({'it': list(range(len(mse))),
-                  'mse': mse}).to_csv("results/test_mse.csv")
-    aprox = pd.DataFrame(data=[
-        x_test,
-        np.asarray(nn.predict(np.asmatrix(x_test))).reshape(-1),
-        func(x_test)
-    ]
-    ).transpose().sort_values(by=0)
-    aprox.rename(columns={0: 'x', 1: 'y_predict', 2: 'y'}, inplace=True)
-    aprox.to_csv("results/test_predict.csv")
+    experiments_data = []
+    for experiment in experiments:
+        nn = NeuralNetwork(**experiment)
+        start = time.process_time()
+        nn.train(x, y)
+        end = time.process_time()
+        mse = nn.get_mse_progress(x_test, y_test)
+        pd.DataFrame({'it': list(range(len(mse))),
+                      'mse': mse}).to_csv(path('results', experiment['path'], 'mse'))
+        aprox = pd.DataFrame(data=[
+            x_test,
+            np.asarray(nn.predict(np.asmatrix(x_test))).reshape(-1),
+            func(x_test)
+        ]
+        ).transpose().sort_values(by=0)
+        aprox.rename(columns={0: 'x', 1: 'y_predict', 2: 'y'}, inplace=True)
+        aprox.to_csv(path('results', experiment['path'], 'predict'))
+        experiments_data.append((experiment['name'],
+                                 end-start,
+                                 experiment['path'],
+                                 path('results', experiment['path'], 'mse'),
+                                 path('results', experiment['path'], 'predict')))
+    pd.DataFrame(experiments_data, columns=['name', 'time', 'path', 'mse_path', 'predict_path']).to_csv("results/experiments.csv")
+
+

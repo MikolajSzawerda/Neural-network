@@ -53,11 +53,20 @@ class EvolutionNeuralNetwork:
             previous_layer = layer
         return slice_points
 
-    def __init__(self, structure):
-        self.structure = structure
+    @staticmethod
+    def to_common_form(results):
+        return [
+            (weights.transpose(), np.asmatrix(biases).transpose())
+            for weights, biases in results
+        ]
+
+    def __init__(self, **kwargs):
+        self.structure = kwargs['topology']
+        self.bias_slice_point = self.calculate_bias_slice_point(self.structure)
+        self.slice_points = self.calculate_slice_points(self.structure, self.bias_slice_point)
+        self.epoch = kwargs['epoch']
+        self.neurons_state = []
         self.weights = []
-        self.bias_slice_point = self.calculate_bias_slice_point(structure)
-        self.slice_points = self.calculate_slice_points(structure, self.bias_slice_point)
 
     def get_matrix_form(self, weights):
         neuron_layers = list()
@@ -70,7 +79,7 @@ class EvolutionNeuralNetwork:
             )
         return neuron_layers
 
-    def predict(self, weights, input):
+    def forward(self, weights, input):
         layer_value = input
         neuron_layers = self.get_matrix_form(weights)
         for layer_weight, layer_bias in neuron_layers[:-1]:
@@ -78,49 +87,73 @@ class EvolutionNeuralNetwork:
         return np.dot(layer_value, neuron_layers[-1][0]) + neuron_layers[-1][1]
 
     def evaluate(self, weights, X, Y):
-        predicted_results = self.predict(weights, X)
+        predicted_results = self.forward(weights, X)
         return np.average(np.power(predicted_results - Y, 2))
 
-    def fit(self, X, Y):
+    def save_neuron_state(self, network_state, **kwargs):
+        self.neurons_state.append(network_state)
+        return False
+
+    def train(self, X, Y):
         n_of_parameters = self.bias_slice_point + sum(self.structure[1:])
-        weights = \
+        results = \
             scipy.optimize.differential_evolution(partial(self.evaluate,
                                                           X=np.asmatrix(X).transpose(),
                                                           Y=np.asmatrix(Y).transpose()),
                                                   popsize=1,
                                                   bounds=[(-10.0, 10.0)] * n_of_parameters,
-                                                  maxiter=3000,
+                                                  maxiter=self.epoch,
+                                                  callback=self.save_neuron_state,
                                                   # disp=True,
                                                   tol=1e-5,
                                                   mutation=(0.0, 1.99),
                                                   recombination=0.5)
-        return weights.x
+        self.weights = self.to_common_form(self.get_matrix_form(results.x))
+        results = []
+        for network_state in self.neurons_state:
+            results.append(self.to_common_form(self.get_matrix_form(network_state)))
+        return results
+
+    def predict(self, x):
+        output = np.asmatrix(x)
+        for weights, biases in self.weights[:-1]:
+            output = gaussian(np.matmul(weights, output) + biases)
+        return np.matmul(self.weights[-1][0], output)+self.weights[-1][1]
 
 
 def main():
-    structure = (1, 6, 6, 1)
-    x = np.linspace(-1.0, 1.0, 500)
+    params = {
+        'topology': (1, 2, 2, 1),
+        'activ_func': ('gaussian', 'gaussian', 'linear'),
+        'epoch': 100,
+        'batch_size': 20,
+        'learning_rate': 0.5,
+    }
+    structure = (1, 2, 2, 1)
+    x = np.linspace(-1.0, 1.0, 100)
     y = func(x)
     dataset = np.column_stack((x, y))
-    ev = EvolutionNeuralNetwork(structure)
-    weights = ev.fit(x, y)
-    dataset = [([x], [func(x)]) for x in
-               [random.uniform(-1.0, 1.0) for _ in range(100)]]
-    data = np.array([a[0] for a in dataset])
-    results = [a[1] for a in dataset]
-    start = time.time()
-    prediction_list = ev.predict(weights, data)
-    end = time.time()
-    print(end-start)
+    ev = EvolutionNeuralNetwork(**params)
+    weights = ev.train(x, y)
+    y_predicted = ev.predict(x)
+    pass
+    # dataset = [([x], [func(x)]) for x in
+    #            [random.uniform(-1.0, 1.0) for _ in range(100)]]
+    # data = np.array([a[0] for a in dataset])
+    # results = [a[1] for a in dataset]
+    # start = time.time()
+    # prediction_list = ev.forward(weights, data)
+    # end = time.time()
+    # print(end-start)
     # for prediction, result in zip(prediction_list, results):
     #     print(prediction, result)
-    for point in dataset:
-        plt.plot(point[0], point[1], 'o', color='black')
-    for predicted, point in zip(prediction_list, dataset):
-        plt.plot(point[0], predicted, 'o', color='red')
+    # for point in dataset:
+    #     plt.plot(point[0], point[1], 'o', color='black')
+    # for predicted, point in zip(prediction_list, dataset):
+    #     plt.plot(point[0], predicted, 'o', color='red')
 
     # plt.savefig(f'{random.random}')
-    plt.show()
+    # plt.show()
 
 
 if __name__ == '__main__':

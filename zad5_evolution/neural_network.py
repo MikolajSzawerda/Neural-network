@@ -80,20 +80,22 @@ def fit(structure, dataset):
 
 
 def main():
-    structure = (1, 6, 6, 1)
+    structure = (1, 2, 2, 1)
     dataset = [([x], [func(x)]) for x in np.linspace(-1.0, 1.0, 100)]
     weights = fit(structure, dataset)
     dataset = [([x], [func(x)]) for x in
-               [random.uniform(-1.0, 1.0) for _ in range(500)]]
+               np.linspace(-1.0, 1.0, 500)]
     data = np.array([a[0] for a in dataset])
     results = [a[1] for a in dataset]
     prediction_list = predict(weights, structure, data)
     for prediction, result in zip(prediction_list, results):
         print(prediction, result)
-    for point in dataset:
-        plt.plot(point[0], point[1], 'o', color='black')
-    for predicted, point in zip(prediction_list, dataset):
-        plt.plot(point[0], predicted, 'o', color='red')
+    x = [point[0][0] for point in dataset]
+    y = [point[1][0] for point in dataset]
+    plt.plot(x, y)
+
+    predicted_y = [point[0] for point in prediction_list]
+    plt.plot(x, predicted_y)
 
     plt.savefig(f'{random.random}')
 

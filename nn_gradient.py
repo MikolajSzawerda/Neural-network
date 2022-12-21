@@ -12,12 +12,10 @@ Layer = namedtuple("Layer", "weights biases activ_func deriv_func")
 
 def orig_func(x):
     return np.power(x, 2) * np.sin(x) + 50 * np.sin(2 * x)
-    # return np.power(x, 2)
 
 
 def func(x):
     return 0.005 * orig_func(10.0 * x) + 0.5
-    # return np.power(x, 2)
 
 
 activation = {
@@ -94,66 +92,6 @@ class GradientNeuralNetwork:
         return output
 
 
-
-
-def init_network(topology, a_func):
-    results = []
-    for i, func in enumerate(a_func, 1):
-        neuron = (npr.uniform(-1, 1, (topology[i], topology[i - 1])),
-                  npr.uniform(-1, 1, (topology[i], 1)),
-                  *activation[func])
-        results.append(neuron)
-    return results
-
-
-def predict(x, neurons):
-    output = x
-    for neuron in neurons:
-        processed_input = np.matmul(neuron[0], output) + neuron[1]
-        output = neuron[2](processed_input)
-    return output
-
-
-def train(X, Y, x_test, y_test, **kwargs):
-    neurons = init_network(kwargs['topology'], kwargs['activ_func'])
-    mse_rate = []
-    epoch = range(kwargs['epoch'])
-    batch_size = int(np.ceil(X.shape[0] / kwargs['batch_size']))
-    for _ in tqdm(epoch):
-        for x_batch, y_batch in zip(np.array_split(X, batch_size), np.array_split(Y, batch_size)):
-            x = np.asmatrix(x_batch)
-            y = np.asmatrix(y_batch)
-            n = x.shape[1]
-            rate = -kwargs['learning_rate'] / n
-            output = x
-            layers = []
-
-            for neuron in neurons:
-                processed_input = np.matmul(neuron[0], output) + neuron[1]
-                output = neuron[2](processed_input)
-                layers.append((processed_input, output))
-
-            back_prop = zip(reversed(layers), reversed(neurons))
-            (next_processed_input, next_output), next_neuron = back_prop.__next__()
-            delta = np.multiply(next_output - y, next_neuron[3](next_processed_input))
-            deltas = [delta]
-            for ((processed_input, output), neuron) in back_prop:
-                delta = np.multiply(neuron[3](processed_input), next_neuron[0].transpose().dot(delta))
-                next_neuron = neuron
-                deltas.append(delta)
-
-            prev_output = x
-            update_prop = zip(reversed(deltas), layers)
-            for i, (delta, (processed_input, output)) in enumerate(update_prop):
-                neurons[i][0].__iadd__(rate * delta.dot(prev_output.transpose()))
-                neurons[i][1].__iadd__(rate * np.sum(delta, 1))
-                prev_output = output
-
-        # y_predict = predict(x_test, neurons)
-        # mse_rate.append(np.average(np.power(y_predict - y_test, 2)))
-    return mse_rate, neurons
-
-
 if __name__ == '__main__':
     params = {
         'topology': (1, 20, 20, 1),
@@ -169,9 +107,8 @@ if __name__ == '__main__':
     x_train, x_test = x[:split_index], x[split_index:]
     y_train, y_test = y[:split_index], y[split_index:]
     nn = GradientNeuralNetwork(**params)
-    nn.train(x_train, y_train)
     # start = time.process_time()
-    mse_rate, neurons = train(x_train, y_train, np.asmatrix(x_test), np.asmatrix(y_test), **params)
+    nn.train(x_train, y_train)
     # end = time.process_time()
     # print(end - start)
     # pd.DataFrame(mse_rate).plot(logy=True)

@@ -13,14 +13,14 @@ def func(x):
 
 if __name__ == '__main__':
     params = {
-        'method': 'evolution',
-        'topology': (1, 2, 2, 1),
+        'method': 'gradient',
+        'topology': (1, 20, 20, 1),
         'activ_func': ('gaussian', 'gaussian', 'linear'),
-        'epoch': 100,
+        'epoch': 1000,
         'batch_size': 20,
         'learning_rate': 0.5,
     }
-    x = np.linspace(-1, 1, 100)
+    x = np.linspace(-1, 1, 1000)
     np.random.shuffle(x)
     y = func(x)
     split_index = int(0.7 * x.shape[0])
@@ -29,7 +29,8 @@ if __name__ == '__main__':
     nn = NeuralNetwork(**params)
     nn.train(x, y)
     mse = nn.get_mse_progress(x_test, y_test)
-    pd.DataFrame(mse).to_csv("results/test_mse.csv")
+    pd.DataFrame({'it': list(range(len(mse))),
+                  'mse': mse}).to_csv("results/test_mse.csv")
     aprox = pd.DataFrame(data=[
         x_test,
         np.asarray(nn.predict(np.asmatrix(x_test))).reshape(-1),

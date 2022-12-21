@@ -5,6 +5,7 @@ from functools import partial
 import random
 from collections import namedtuple
 import time
+from utils import Layer, activation
 
 MatrixView = namedtuple("MatrixView", "w_a w_b w_col w_row b_a b_b")
 
@@ -54,10 +55,12 @@ class EvolutionNeuralNetwork:
         return slice_points
 
     @staticmethod
-    def to_common_form(results):
+    def to_common_form(results, activ_funcs):
         return [
-            (weights.transpose(), np.asmatrix(biases).transpose())
-            for weights, biases in results
+            Layer(weights.transpose(),
+                  np.asmatrix(biases).transpose(),
+                  *activation[func])
+            for ((weights, biases), func) in zip(results, activ_funcs)
         ]
 
     def __init__(self, **kwargs):
@@ -67,6 +70,7 @@ class EvolutionNeuralNetwork:
         self.epoch = kwargs['epoch']
         self.neurons_state = []
         self.weights = []
+        self.activ_funcs = kwargs['activ_func']
 
     def get_matrix_form(self, weights):
         neuron_layers = list()
@@ -108,17 +112,17 @@ class EvolutionNeuralNetwork:
                                                   tol=1e-5,
                                                   mutation=(0.0, 1.99),
                                                   recombination=0.5)
-        self.weights = self.to_common_form(self.get_matrix_form(results.x))
+        self.weights = self.to_common_form(self.get_matrix_form(results.x), self.activ_funcs)
         results = []
         for network_state in self.neurons_state:
-            results.append(self.to_common_form(self.get_matrix_form(network_state)))
+            results.append(self.to_common_form(self.get_matrix_form(network_state), self.activ_funcs))
         return results
 
     def predict(self, x):
         output = np.asmatrix(x)
-        for weights, biases in self.weights[:-1]:
-            output = gaussian(np.matmul(weights, output) + biases)
-        return np.matmul(self.weights[-1][0], output)+self.weights[-1][1]
+        for layer in self.weights:
+            output = layer.activ_func(np.matmul(layer.weights, output) + layer.biases)
+        return output
 
 
 def main():

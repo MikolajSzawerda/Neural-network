@@ -6,8 +6,7 @@ from tqdm import tqdm
 import time
 from collections import namedtuple
 from copy import deepcopy
-
-Layer = namedtuple("Layer", "weights biases activ_func deriv_func")
+from utils import activation, Layer
 
 
 def orig_func(x):
@@ -18,12 +17,7 @@ def func(x):
     return 0.005 * orig_func(10.0 * x) + 0.5
 
 
-activation = {
-    'relu': (lambda x: np.maximum(0, x), lambda x: (x > 0) * 1),
-    'sigmoid': (lambda x: np.divide(1, 1 + np.exp(-x)), lambda x: np.divide(np.exp(x), np.power(1 + np.exp(x), 2))),
-    'gaussian': (lambda x: np.exp(-np.power(x, 2)), lambda x: np.multiply(-2 * x, np.exp(-np.power(x, 2)))),
-    'linear': (lambda x: x, lambda x: 1)
-}
+
 
 
 class GradientNeuralNetwork:

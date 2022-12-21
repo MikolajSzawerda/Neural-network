@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from NeuralNetwork import NeuralNetwork
-
+import pandas as pd
 
 def orig_func(x):
     return np.power(x, 2) * np.sin(x) + 50 * np.sin(2 * x)
@@ -13,8 +13,8 @@ def func(x):
 
 if __name__ == '__main__':
     params = {
-        'method': 'gradient',
-        'topology': (1, 20, 20, 1),
+        'method': 'evolution',
+        'topology': (1, 2, 2, 1),
         'activ_func': ('gaussian', 'gaussian', 'linear'),
         'epoch': 100,
         'batch_size': 20,
@@ -29,5 +29,12 @@ if __name__ == '__main__':
     nn = NeuralNetwork(**params)
     nn.train(x, y)
     mse = nn.get_mse_progress(x_test, y_test)
-    plt.plot(range(100), mse)
-    plt.show()
+    pd.DataFrame(mse).to_csv("results/test_mse.csv")
+    aprox = pd.DataFrame(data=[
+        x_test,
+        np.asarray(nn.predict(np.asmatrix(x_test))).reshape(-1),
+        func(x_test)
+    ]
+    ).transpose().sort_values(by=0)
+    aprox.rename(columns={0: 'x', 1: 'y_predict', 2: 'y'}, inplace=True)
+    aprox.to_csv("results/test_predict.csv")

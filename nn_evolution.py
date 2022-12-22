@@ -78,9 +78,9 @@ class EvolutionNeuralNetwork:
     def forward(self, weights, input):
         layer_value = input
         neuron_layers = self.get_matrix_form(weights)
-        for layer_weight, layer_bias in neuron_layers[:-1]:
-            layer_value = gaussian(np.matmul(layer_value, layer_weight) + layer_bias)
-        return np.dot(layer_value, neuron_layers[-1][0]) + neuron_layers[-1][1]
+        for (layer_weight, layer_bias), activ_funcs in zip(neuron_layers, self.activ_funcs):
+            layer_value = activation[activ_funcs][0](np.matmul(layer_value, layer_weight) + layer_bias)
+        return layer_value
 
     def evaluate(self, weights, X, Y):
         predicted_results = self.forward(weights, X)

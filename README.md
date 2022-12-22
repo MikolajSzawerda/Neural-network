@@ -25,21 +25,24 @@ $f(x)=x^2sin(x)+100\space sin(x)cos(x)$
 Po wstępnym rozpoznaniu zdecydowaliśmy się na następujące ilości neuronów:
 
 - $2, 2$
-- $5, 4$
+- $5, 5$
 - $10, 10$
+- $20, 20$
 
-plapala
-
+Oznaczenie (5,5) oznacza, że zarówno pierwsza jak i druga warstawa ukryta mają po 5 neuronów.
 
 Aby uzyskać pełniejszy obraz jakości poszczególnych rozwiązań, zmierzyliśmy również czas potrzebny na wytrenowanie poszczególnych wariantów sieci.
 
-Do trenowania użyliśmy zbioru ...
-Natomiast zbiór testowy stanowiło ...
-
-W przypadku algorytmu ewolucyjnego ewaluacja rozwiązania przeprowadzana była dla całego batcha (XXX wartości), natomiast na potrzeby algorytmu gradientowego epoch został podzielony na N batcyh po M wartości, po których następowała aktualizacja wag. Liczbę iteracji ustalono na poziomie 3000 dla algorytmu ewolucyjnego i YYY dla algorytmu gradientowego.
-Aby uzyskać miarodajne wyniki związane z wykorzystaniem losowości do inicjalizacji wektora wag (metoda gradientowa), jak i ogólnym działaniem algorytmu (metoda ewolucyjna), każdy eksperyment został uruchomiony kilka razy a do analizy użyto najlepszą z uzyskanych prób.
 
 W celu poprawy własności optymalizacyjnych funkcji celu, przeskalowaliśmy $x$ i $f(x)$ do $\left \langle -1, 1 \right \rangle \times \left \langle 0, 1 \right \rangle$
+
+
+Zbiór danych stanowiło 1000 równomierenie rozłożonych punktów z przedziału
+$\left \langle -1, 1 \right \rangle$ dla których obliczono dokładne wartości zadanej funkcji. Następnie w sposób losowy wybrane zostały próbki do zbiotu uczącego i testującego odpowiednio w stosunku 7:3.
+
+W przypadku algorytmu ewolucyjnego ewaluacja rozwiązania przeprowadzana była dla wszystkich próbek (700 wartości), natomiast na potrzeby algorytmu gradientowego epoch o wielkości 700 został podzielony na taką ilość batchy, dla której uzyskiwano najlepsze rezultaty.
+
+Aby uzyskać miarodajne wyniki związane z wykorzystaniem losowości do inicjalizacji wektora wag (metoda gradientowa), jak i ogólnym działaniem algorytmu (metoda ewolucyjna), każdy eksperyment został uruchomiony kilka razy a do analizy użyto najlepszą z uzyskanych prób.
 
 
 ## 3. Uzyskane rezultaty

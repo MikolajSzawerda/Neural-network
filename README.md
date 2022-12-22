@@ -50,7 +50,7 @@ W celu poprawy własności optymalizacyjnych funkcji celu, przeskalowaliśmy $x$
 
 <img src="plots/2_2_gradient_mse.png" alt="drawing" width="600"/>
 
-Można zauważyć równomierny spadek MSE w przypadku użycia algorytmu ewolucyjnego. Algorytm z użyciem gradientu poradził sobie znacząco gorzej.
+Można zauważyć, że gradient dużo szybciej znalazł optimum, lecz algorytm ewolucyjny lepiej zeksplorował i zeksploatował funckję celu.
 
 <img src="plots/5_5_evolution_mse.png" alt="drawing" width="600"/>
 
@@ -108,14 +108,19 @@ Algorytmy sieci neuronowej z użyciem algorytmu ewolucyjnego wykonywały się o 
 
 ## 4. Wnioski
 
-Tu będzie trzeba coś mądrego napisać. Spodziewane przeze mnie wnioski, które nie muszą się pokryć i lepiej się nimi nie sugerować (ok)
+Porównując otrzymane rezultaty pod względem ilości neuronów, można wysnuć następujące wnioski:
 
+- ilość neuronów musi być adekwatna do problemu - ich niewystarczająca ilość nie pozwala na właściwe oddanie kształtu funkcji, natomiast zbyt duża ilość zwiększa wymiarowość zadania optymalizacyjnego, utrudniając znaleznie optimum globalnego
 
-- wiekszą liczba neuronów to lepsza aproksymacja
-- może coś nt. tego czy ma znaczenie która wartstwa jest bardziej znacząca (jeśli to wyjdzie)
-- algorytm ewolucyjny działa dlużej niż gradientowy
-- algorytm gradientowy daje lepsze wyniki niż ewolucyjny
-- gradientowy stale i sukcesywnie zmniejsza MSE, a ewoluycjny wykonuje 'skoki' i czasami utyka.
+- czas trenowania sieci rośnie wraz z ilością neuronów w warstwie
+
+Porównując otrzymane rezultaty pod względem użytego algorytmy optymalizacyjnego, można wysnuć następujące wnioski:
+
+- algorytm gradientu wraz z zastosowaniem liczenia gradientu błędu przez propagację wstęczną pozwala na osiągnięcie lepszych rezultatów od algorytmu ewolucyjnego
+
+- ponieważ alogrytm ewolucyjny wymaga dużej ilości ewaluacji funkcji celu wykonuje się dłużej
+
+- implementacja sieci neuronowej przy użyciu algorytmu ewolucyjnego jest prostsza - nie wymaga stosowania zaawansowanych zależności analitycznych
 
 
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>

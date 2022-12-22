@@ -45,9 +45,10 @@ if __name__ == '__main__':
         aprox.to_csv(path('results', experiment['path'], 'predict'))
         experiments_data.append((experiment['name'],
                                  end-start,
+                                 mse[-1],
                                  experiment['path'],
                                  path('results', experiment['path'], 'mse'),
                                  path('results', experiment['path'], 'predict')))
-    pd.DataFrame(experiments_data, columns=['name', 'time', 'path', 'mse_path', 'predict_path']).to_csv("results/experiments.csv")
+    pd.DataFrame(experiments_data, columns=['name', 'time', 'mse', 'path', 'mse_path', 'predict_path']).to_csv("results/experiments.csv")
 
 

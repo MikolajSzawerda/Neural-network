@@ -106,6 +106,9 @@ Porównując rezultaty pomiędzy ilością neuronów w warstwie, można zauważy
 
 Algorytmy sieci neuronowej z użyciem algorytmu ewolucyjnego wykonywały się o rzędzy wielkości dłużej od z użyciem gradientu. Jest to spowodowane koniecznością reprezentacji sieci neuronowej w postaci wektora(w celu skorzystania z solvera) i jej późniejszym transformacjom do postaci macierzowej
 
+<img src="plots/summary_table.png" alt="drawing" width="600"/>
+
+
 ## 4. Wnioski
 
 Porównując otrzymane rezultaty pod względem ilości neuronów, można wysnuć następujące wnioski:

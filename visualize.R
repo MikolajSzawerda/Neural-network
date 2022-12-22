@@ -1,6 +1,11 @@
 library(data.table)
 library(ggplot2)
 library(scales)
+library(tidyr)
+library(dplyr)
+library(gt)
+library(gtExtras)
+
 
 exec_data <- fread("results/experiments.csv")
 
@@ -43,7 +48,30 @@ prepare_time_plot <- function (data) {
   ggsave("plots/execution_time.png", plt, width = 15, height = 5, units = "in")
 }
 
+prepare_summary_table <- function (data) {
+  data %>%
+    select(name, time, mse) %>%
+    gt() %>%
+    fmt_number(
+      columns = 2,
+      decimals = 2,
+      suffixing = TRUE
+    ) %>%
+    fmt_number(
+      columns = 3,
+      decimals = 5,
+      suffixing = TRUE
+    ) %>%
+    cols_label(
+      name = "Nazwa",
+      time = "Czas wykonania",
+      mse = "MSE"
+    ) %>%
+    tab_header("Podsumowanie wyników")
+}
+
 apply(exec_data, 1, prepare_mse_plot)
-apply(exec_data, 1, prepare_predict_plot)
-prepare_time_plot(exec_data)
+# apply(exec_data, 1, prepare_predict_plot)
+# prepare_time_plot(exec_data)
+# gtsave(prepare_summary_table(exec_data), "plots/summary_table.png")
 

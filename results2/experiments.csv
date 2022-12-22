@@ -1,0 +1,9 @@
+,name,time,mse,path,mse_path,predict_path
+0,"Gradient (2, 2)",38.11072687,0.04016063441072227,2_2_gradient,results/2_2_gradient_mse.csv,results/2_2_gradient_predict.csv
+1,"Evolution (2, 2)",4.691256036999995,0.020681063538666264,2_2_evolution,results/2_2_evolution_mse.csv,results/2_2_evolution_predict.csv
+2,"Gradient (5, 5)",21.263983784000004,0.0002311582168893408,5_5_gradient,results/5_5_gradient_mse.csv,results/5_5_gradient_predict.csv
+3,"Evolution (5, 5)",94.501594837,0.0011966760562755626,5_5_evolution,results/5_5_evolution_mse.csv,results/5_5_evolution_predict.csv
+4,"Gradient (10, 10)",47.19030249099998,8.830969633572329e-05,10_10_gradient,results/10_10_gradient_mse.csv,results/10_10_gradient_predict.csv
+5,"Evolution (10, 10)",1253.271121691,0.003415483366074151,10_10_evolution,results/10_10_evolution_mse.csv,results/10_10_evolution_predict.csv
+6,"Gradient (20, 20)",8.817087066000113,0.0001689575141945975,20_20_gradient,results/20_20_gradient_mse.csv,results/20_20_gradient_predict.csv
+7,"Evolution (20, 20)",7195.365426926999,0.028496645652428286,20_20_evolution,results/20_20_evolution_mse.csv,results/20_20_evolution_predict.csv

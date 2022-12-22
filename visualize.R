@@ -43,7 +43,7 @@ prepare_time_plot <- function (data) {
   ggsave("plots/execution_time.png", plt, width = 15, height = 5, units = "in")
 }
 
-# apply(exec_data, 1, prepare_mse_plot)
-# apply(exec_data, 1, prepare_predict_plot)
+apply(exec_data, 1, prepare_mse_plot)
+apply(exec_data, 1, prepare_predict_plot)
 prepare_time_plot(exec_data)
 

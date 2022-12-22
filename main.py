@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from NeuralNetwork import NeuralNetwork
 import pandas as pd
 from experiments import experiments

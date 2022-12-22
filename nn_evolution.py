@@ -1,10 +1,7 @@
 import numpy as np
-import matplotlib.pyplot as plt
 import scipy
 from functools import partial
-import random
 from collections import namedtuple
-import time
 from utils import Layer, activation, func
 
 MatrixView = namedtuple("MatrixView", "w_a w_b w_col w_row b_a b_b")
@@ -115,43 +112,3 @@ class EvolutionNeuralNetwork:
         for layer in self.weights:
             output = layer.activ_func(np.matmul(layer.weights, output) + layer.biases)
         return output
-
-
-def main():
-    params = {
-        'topology': (1, 2, 2, 1),
-        'activ_func': ('gaussian', 'gaussian', 'linear'),
-        'epoch': 100,
-        'batch_size': 20,
-        'learning_rate': 0.5,
-    }
-    structure = (1, 2, 2, 1)
-    x = np.linspace(-1.0, 1.0, 100)
-    y = func(x)
-    dataset = np.column_stack((x, y))
-    ev = EvolutionNeuralNetwork(**params)
-    weights = ev.train(x, y)
-    y_predicted = ev.predict(x)
-    print(weights)
-    pass
-    # dataset = [([x], [func(x)]) for x in
-    #            [random.uniform(-1.0, 1.0) for _ in range(100)]]
-    # data = np.array([a[0] for a in dataset])
-    # results = [a[1] for a in dataset]
-    # start = time.time()
-    # prediction_list = ev.forward(weights, data)
-    # end = time.time()
-    # print(end-start)
-    # for prediction, result in zip(prediction_list, results):
-    #     print(prediction, result)
-    # for point in dataset:
-    #     plt.plot(point[0], point[1], 'o', color='black')
-    # for predicted, point in zip(prediction_list, dataset):
-    #     plt.plot(point[0], predicted, 'o', color='red')
-
-    # plt.savefig(f'{random.random}')
-    # plt.show()
-
-
-if __name__ == '__main__':
-    main()

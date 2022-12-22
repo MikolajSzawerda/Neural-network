@@ -1,9 +1,6 @@
-import matplotlib.pyplot as plt
 import numpy as np
 import numpy.random as npr
-import pandas as pd
 from tqdm import tqdm
-import time
 from copy import deepcopy
 from utils import activation, Layer, func
 
@@ -72,34 +69,3 @@ class GradientNeuralNetwork:
         for layer in self.layers:
             output = layer.activ_func(np.matmul(layer.weights, output) + layer.biases)
         return output
-
-
-if __name__ == '__main__':
-    params = {
-        'topology': (1, 20, 20, 1),
-        'activ_func': ('gaussian', 'gaussian', 'linear'),
-        'epoch': 1000,
-        'batch_size': 50,
-        'learning_rate': 0.5,
-    }
-    x = np.linspace(-1, 1, 1000)
-    np.random.shuffle(x)
-    y = np.apply_along_axis(func, 0, x)
-    split_index = int(0.7 * x.shape[0])
-    x_train, x_test = x[:split_index], x[split_index:]
-    y_train, y_test = y[:split_index], y[split_index:]
-    nn = GradientNeuralNetwork(**params)
-    # start = time.process_time()
-    nn.train(x_train, y_train)
-    # end = time.process_time()
-    # print(end - start)
-    # pd.DataFrame(mse_rate).plot(logy=True)
-    aprox = pd.DataFrame(data=[
-        x_test,
-        np.asarray(nn.predict(np.asmatrix(x_test))).reshape(-1),
-        np.apply_along_axis(func, 0, x_test)
-    ]
-    ).transpose().sort_values(by=0)
-    aprox.rename(columns={0: 'x', 1: 'y_predict', 2: 'y'}, inplace=True)
-    aprox.plot('x', ['y', 'y_predict'])
-    plt.show()

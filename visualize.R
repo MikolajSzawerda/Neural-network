@@ -1,6 +1,8 @@
 library(data.table)
 library(ggplot2)
+library(scales)
 
+setwd("/home/kajotello/Desktop/studia/WSI/Neural-network/")
 exec_data <- fread("results/experiments.csv")
 
 prepare_mse_plot <- function (row){
@@ -46,3 +48,4 @@ prepare_time_plot <- function (data) {
 apply(exec_data, 1, prepare_mse_plot)
 apply(exec_data, 1, prepare_predict_plot)
 prepare_time_plot(exec_data)
+

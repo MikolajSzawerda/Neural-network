@@ -5,7 +5,7 @@ from functools import partial
 import random
 from collections import namedtuple
 import time
-from utils import Layer, activation
+from utils import Layer, activation, func
 
 MatrixView = namedtuple("MatrixView", "w_a w_b w_col w_row b_a b_b")
 
@@ -16,14 +16,6 @@ def sigmoid(x):
 
 def gaussian(x):
     return np.exp(-np.power(x, 2))
-
-
-def f(x):
-    return np.power(x, 2) * np.sin(x) + 100 * np.sin(x) * np.cos(x)
-
-
-def func(x):
-    return 0.005 * f(10.0 * x) + 0.5
 
 
 class EvolutionNeuralNetwork:
@@ -140,6 +132,7 @@ def main():
     ev = EvolutionNeuralNetwork(**params)
     weights = ev.train(x, y)
     y_predicted = ev.predict(x)
+    print(weights)
     pass
     # dataset = [([x], [func(x)]) for x in
     #            [random.uniform(-1.0, 1.0) for _ in range(100)]]

@@ -4,20 +4,8 @@ import numpy.random as npr
 import pandas as pd
 from tqdm import tqdm
 import time
-from collections import namedtuple
 from copy import deepcopy
-from utils import activation, Layer
-
-
-def orig_func(x):
-    return np.power(x, 2) * np.sin(x) + 50 * np.sin(2 * x)
-
-
-def func(x):
-    return 0.005 * orig_func(10.0 * x) + 0.5
-
-
-
+from utils import activation, Layer, func
 
 
 class GradientNeuralNetwork:

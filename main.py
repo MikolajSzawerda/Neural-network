@@ -10,6 +10,7 @@ from utils import func
 def path(folder, base, exp):
     return f'{folder}/{base}_{exp}.csv'
 
+
 if __name__ == '__main__':
     params = {
         'method': 'gradient',

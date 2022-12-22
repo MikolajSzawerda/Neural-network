@@ -1,24 +1,28 @@
 # [WSI] Kajetan Rożej/Mikołaj Szawerda - Zadanie 5. (Sieci Neuronowe)
 ## 1. Implementowane algorytmy
 
-Głównym celem zadania ćwiczenia 5. była
+Głównym celem zadania 5. była
  implementacja perceptronu wielowarstwowego (ang. MLP
 ). Jest to najpopularniejszy typ sztucznych sieci neuronowych. Sieć tego typu składa się zwykle z jednej warstwy wejściowej, kilku warstw ukrytych oraz jednej warstwy wyjściowej. Neurony warstw ukrytych posiadają wiele wejść i jedno wyjście, a jego wartość obliczana jest w następujący sposób:
 
-1. $s=\sum^n_{i=1} x_iw_i + b_0$ to można poprawić, bo nie widać, że wagi się różnią dla każdego neuronu
+1. $s=\sum^n_{i=1} x_{j,i}^{k} w_{j,i}^{k} + b_{j}^{k}$, gdzie $(j, k)$ oznacza j. neuron w k. warstwie
 2. $s=f(s)$ , gdzie s to wybrana funkcja aktywacji
 
-W naszej sieci jako funckję aktywacji zdecydoawliśmy się przyjąć gaussian ($f(x)=exp(-x^2)$)
+W naszej sieci jako funkcję aktywacji zdecydowaliśmy się przyjąć gaussian ($f(x)=exp(-x^2)$), ze względu na dobre właściwości przy zastosowaniu sieci neuronowej jako aproksymatora uniwersalnego.
 
 Trenowanie sieci polega na poszukiwaniu takiego zestawu wag i biasów, które pozwolą na jak najlepszą estymację zadanej funkcji. W tym celu wykorzystywać można metodę propagacji wstecznej, która to rozkłada uzyskany błąd na poszczególne neurony, wskazując kierunek, w którym w danej iteracji należy zmodyfikować wagi w celu zmniejszenia popełnionego błędu. Tempo modyfikacji wag określone jest natomiast za pomocą współczynnika uczenia.
 Wykorzystanie tej metody w połączeniu z algorytmem gradientowym jest jednym z najpopularniejszych sposobów na znajdowanie wag sieci.
 
-W związku z wymaganiami zaimplementowaliśmy również poszukiwanie wag przy pomocy algorytmu ewolucyjnego, który do ich poszukiwania korzysta jedynie z losowych mutacji, niejako sam starając się ustalić optymalny kierunek poszukiwań. Po konsultacji z prowadzącym, aby upodobnić sposób ten do metody gradientowej i skrócić czas wykonania zdecydowaliśmy się na wykorzystanie populacji liczącej jednego osobnika.
+W związku z wymaganiami zaimplementowaliśmy również poszukiwanie wag przy pomocy algorytmu ewolucyjnego. Po konsultacji z prowadzącym, aby upodobnić sposób ten do metody gradientowej i skrócić czas wykonania zdecydowaliśmy się na wykorzystanie populacji liczącej jednego osobnika.
 
 
 ## 2. Zaplanowane eksperymenty
 
-Do eksperymentów użyliśmy perceptronu z dwiema warstwami ukrytymi. Głównym zadaniem było zbadanie wpływu ilości neuronów w poszczególnych warstwach i użytego algorytmu (gradientowego lub ewolucyjnego) na przebieg procesu uczenia i jakość estymacji. Po wstępnym rozpoznaniu zdecydowaliśmy się na następujące ilości neuronów:
+Do eksperymentów użyliśmy perceptronu z dwiema warstwami ukrytymi. Głównym zadaniem było zbadanie wpływu ilości neuronów w poszczególnych warstwach i użytego algorytmu (gradientowego lub ewolucyjnego) na przebieg procesu uczenia i jakość estymacji zadanej funkcji:
+
+$f(x)=x^2sin(x)+100\space sin(x)cos(x)$
+
+Po wstępnym rozpoznaniu zdecydowaliśmy się na następujące ilości neuronów:
 
 - $2, 2$
 - $5, 4$
@@ -34,6 +38,8 @@ Natomiast zbiór testowy stanowiło ...
 
 W przypadku algorytmu ewolucyjnego ewaluacja rozwiązania przeprowadzana była dla całego batcha (XXX wartości), natomiast na potrzeby algorytmu gradientowego epoch został podzielony na N batcyh po M wartości, po których następowała aktualizacja wag. Liczbę iteracji ustalono na poziomie 3000 dla algorytmu ewolucyjnego i YYY dla algorytmu gradientowego.
 Aby uzyskać miarodajne wyniki związane z wykorzystaniem losowości do inicjalizacji wektora wag (metoda gradientowa), jak i ogólnym działaniem algorytmu (metoda ewolucyjna), każdy eksperyment został uruchomiony kilka razy a do analizy użyto najlepszą z uzyskanych prób.
+
+W celu poprawy własności optymalizacyjnych funkcji celu, przeskalowaliśmy $x$ i $f(x)$ do $\left \langle -1, 1 \right \rangle \times \left \langle 0, 1 \right \rangle$
 
 
 ## 3. Uzyskane rezultaty

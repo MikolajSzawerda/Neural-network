@@ -78,11 +78,11 @@ if __name__ == '__main__':
     params = {
         'topology': (1, 20, 20, 1),
         'activ_func': ('gaussian', 'gaussian', 'linear'),
-        'epoch': 100,
-        'batch_size': 20,
+        'epoch': 1000,
+        'batch_size': 50,
         'learning_rate': 0.5,
     }
-    x = np.arange(-1, 1, 0.0001)
+    x = np.linspace(-1, 1, 1000)
     np.random.shuffle(x)
     y = np.apply_along_axis(func, 0, x)
     split_index = int(0.7 * x.shape[0])

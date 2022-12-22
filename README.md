@@ -36,6 +36,7 @@ Aby uzyskać pełniejszy obraz jakości poszczególnych rozwiązań, zmierzyliś
 
 W celu poprawy własności optymalizacyjnych funkcji celu, przeskalowaliśmy $x$ i $f(x)$ do $\left \langle -1, 1 \right \rangle \times \left \langle 0, 1 \right \rangle$
 
+<div style="page-break-after: always;"></div>
 
 Zbiór danych stanowiło 1000 równomierenie rozłożonych punktów z przedziału
 $\left \langle -1, 1 \right \rangle$ dla których obliczono dokładne wartości zadanej funkcji. Następnie w sposób losowy wybrane zostały próbki do zbiotu uczącego i testującego odpowiednio w stosunku 7:3.
@@ -49,54 +50,57 @@ Aby uzyskać miarodajne wyniki związane z wykorzystaniem losowości do inicjali
 
 ### Wykres wartości MSE w poszczegolnych przypadkach:
 
-<img src="plots/2_2_evolution_mse.png" alt="drawing" width="600"/>
+<img src="plots/2_2_evolution_mse.png" alt="drawing" width="320"/>
 
-<img src="plots/2_2_gradient_mse.png" alt="drawing" width="600"/>
+<img src="plots/2_2_gradient_mse.png" alt="drawing" width="320"/>
+
 
 Można zauważyć, że gradient dużo szybciej znalazł optimum, lecz algorytm ewolucyjny lepiej zeksplorował i zeksploatował funckję celu.
 
-<img src="plots/5_5_evolution_mse.png" alt="drawing" width="600"/>
+<div style="page-break-after: always;"></div>
 
-<img src="plots/5_5_gradient_mse.png" alt="drawing" width="600"/>
+<img src="plots/5_5_evolution_mse.png" alt="drawing" width="320"/>
+
+<img src="plots/5_5_gradient_mse.png" alt="drawing" width="320"/>
 
 MSE dla algorytmu ewolucyjnego spadało bardziej równomiernie, niż dla algorytmu z użyciem gradientu. W tym przypadku gradient osiągnął rezultaty lepsze o rząd wielkości.
 
-<img src="plots/10_10_evolution_mse.png" alt="drawing" width="600"/>
+<img src="plots/10_10_evolution_mse.png" alt="drawing" width="320"/>
 
-<img src="plots/10_10_gradient_mse.png" alt="drawing" width="600"/>
+<img src="plots/10_10_gradient_mse.png" alt="drawing" width="320"/>
 
 Algorytm gradientu w tym przypadku szybko znalazł otoczenie minimum i osiągnął rezultaty lepsze o rząd wielkości.
 
-<img src="plots/20_20_evolution_mse.png" alt="drawing" width="600"/>
+<img src="plots/20_20_evolution_mse.png" alt="drawing" width="320"/>
 
-<img src="plots/20_20_gradient_mse.png" alt="drawing" width="600"/>
+<img src="plots/20_20_gradient_mse.png" alt="drawing" width="320"/>
 
 W przypadku wielu wymiarów algorytm ewolucyjny nie był w stanie wyjść z płaskowyżu nie poprawiał swojego rezultatu w kolejnych iteracjach. Algorytm z użyciem gradientu osiągnał rezulaty lepsze o dwa rzędy wielkości.
 
 
 ### Wykres porównujacy jakość estymacji w porównaniu z funkcją wejściową:
 
-<img src="plots/2_2_evolution_predict.png" alt="drawing" width="600"/>
+<img src="plots/2_2_evolution_predict.png" alt="drawing" width="320"/>
 
-<img src="plots/2_2_gradient_predict.png" alt="drawing" width="600"/>
+<img src="plots/2_2_gradient_predict.png" alt="drawing" width="320"/>
 
 Oba algorytmy nie były w stanie dopasować się do kształtu funkcji - ilość wymiarów była niewystarczająca.
 
-<img src="plots/5_5_evolution_predict.png" alt="drawing" width="600"/>
+<img src="plots/5_5_evolution_predict.png" alt="drawing" width="320"/>
 
-<img src="plots/5_5_gradient_predict.png" alt="drawing" width="600"/>
+<img src="plots/5_5_gradient_predict.png" alt="drawing" width="320"/>
 
 W przypadku warstw (5, 5) każdy z algorytmów przyjął kształt zbliżony do funkcji celu - algorytm z gradientem zrobił to lepiej
 
-<img src="plots/10_10_evolution_predict.png" alt="drawing" width="600"/>
+<img src="plots/10_10_evolution_predict.png" alt="drawing" width="320"/>
 
-<img src="plots/10_10_gradient_predict.png" alt="drawing" width="600"/>
+<img src="plots/10_10_gradient_predict.png" alt="drawing" width="320"/>
 
 Dla warstw (10, 10) algorytm gradientu osiągnął niemalże idealne dopasowanie
 
-<img src="plots/20_20_evolution_predict.png" alt="drawing" width="600"/>
+<img src="plots/20_20_evolution_predict.png" alt="drawing" width="320"/>
 
-<img src="plots/20_20_gradient_predict.png" alt="drawing" width="600"/>
+<img src="plots/20_20_gradient_predict.png" alt="drawing" width="320"/>
 
 Oba algorytmy poradziły sobie gorzej dla większej ilości neuronów - ewolucyjny w szczególności - pojawiło się zjawisko zwiększonej wymiarowości zadania
 
@@ -109,8 +113,7 @@ Porównując rezultaty pomiędzy ilością neuronów w warstwie, można zauważy
 
 Algorytmy sieci neuronowej z użyciem algorytmu ewolucyjnego wykonywały się o rzędzy wielkości dłużej od z użyciem gradientu. Jest to spowodowane koniecznością reprezentacji sieci neuronowej w postaci wektora(w celu skorzystania z solvera) i jej późniejszym transformacjom do postaci macierzowej
 
-<img src="plots/summary_table.png" alt="drawing" width="600"/>
-
+<img src="plots/summary_table.png" alt="drawing" width="320"/>
 
 ## 4. Wnioski
 

@@ -5,6 +5,7 @@ library(tidyr)
 library(dplyr)
 library(gt)
 library(gtExtras)
+theme_set(theme_classic())
 
 
 exec_data <- fread("results/experiments.csv")
@@ -34,7 +35,16 @@ prepare_predict_plot <- function(row){
     xlab("X") +
     ylab("Y") +
     ggtitle(row['name']) +
-    scale_color_manual(name='Legenda', values=c('przewidywana'='red', 'dokładna'='blue'))
+    scale_color_manual(name='Legenda', values=c('przewidywana'='red', 'dokładna'='blue')) +
+    theme(plot.title = element_text(hjust = 0.5, face = "bold"),
+            plot.background = element_rect(fill = "#f7f7f7"),
+            panel.background = element_rect(fill = "#f7f7f7"),
+            panel.grid.minor = element_blank(),
+            panel.grid.major.y = element_blank(),
+            panel.grid.major.x = element_line(),
+            axis.ticks = element_blank(),
+            legend.position = "bottom",
+            panel.border = element_blank())
   ggsave(sprintf("plots/%s_predict.png", row['path']), plt, width = 5, height = 5, units = "in")
   plt
 }
@@ -42,10 +52,10 @@ prepare_predict_plot <- function(row){
 prepare_time_plot <- function (data) {
   plt <- ggplot(data[order(data$name)], aes(x=name, y=time)) +
     xlab("Eksperyment") +
-    ylab("Czas") +
+    ylab("Czas[s]") +
     ggtitle("Wykres czasu wykonania") +
     geom_bar(stat='identity')
-  ggsave("plots/execution_time.png", plt, width = 15, height = 5, units = "in")
+  ggsave("plots/execution_time.png", plt, width = 8, height = 5, units = "in")
 }
 
 prepare_summary_table <- function (data) {
@@ -70,8 +80,8 @@ prepare_summary_table <- function (data) {
     tab_header("Podsumowanie wyników")
 }
 
-apply(exec_data, 1, prepare_mse_plot)
+# apply(exec_data, 1, prepare_mse_plot)
 # apply(exec_data, 1, prepare_predict_plot)
-# prepare_time_plot(exec_data)
+prepare_time_plot(exec_data)
 # gtsave(prepare_summary_table(exec_data), "plots/summary_table.png")
 

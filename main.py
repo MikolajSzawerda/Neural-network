@@ -12,14 +12,6 @@ def path(folder, base, exp):
 
 
 if __name__ == '__main__':
-    params = {
-        'method': 'gradient',
-        'topology': (1, 20, 20, 1),
-        'activ_func': ('gaussian', 'gaussian', 'linear'),
-        'epoch': 1000,
-        'batch_size': 20,
-        'learning_rate': 0.5,
-    }
     x = np.linspace(-1, 1, 1000)
     np.random.shuffle(x)
     y = func(x)

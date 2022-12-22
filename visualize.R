@@ -2,7 +2,6 @@ library(data.table)
 library(ggplot2)
 library(scales)
 
-setwd("/home/kajotello/Desktop/studia/WSI/Neural-network/")
 exec_data <- fread("results/experiments.csv")
 
 prepare_mse_plot <- function (row){
@@ -36,16 +35,15 @@ prepare_predict_plot <- function(row){
 }
 
 prepare_time_plot <- function (data) {
-  plt <- ggplot(data, aes(x=name, y=time)) +
+  plt <- ggplot(data[order(data$name)], aes(x=name, y=time)) +
     xlab("Eksperyment") +
     ylab("Czas") +
     ggtitle("Wykres czasu wykonania") +
-    scale_y_continuous(breaks = seq(0, max(exec_data$time), 0.25)) +
     geom_bar(stat='identity')
-  ggsave("plots/execution_time.png", plt, width = 5, height = 5, units = "in")
+  ggsave("plots/execution_time.png", plt, width = 15, height = 5, units = "in")
 }
 
-apply(exec_data, 1, prepare_mse_plot)
-apply(exec_data, 1, prepare_predict_plot)
+# apply(exec_data, 1, prepare_mse_plot)
+# apply(exec_data, 1, prepare_predict_plot)
 prepare_time_plot(exec_data)
 

@@ -7,14 +7,6 @@ from utils import Layer, activation, func
 MatrixView = namedtuple("MatrixView", "w_a w_b w_col w_row b_a b_b")
 
 
-def sigmoid(x):
-    return np.divide(1, (1 + np.exp(-x)))
-
-
-def gaussian(x):
-    return np.exp(-np.power(x, 2))
-
-
 class EvolutionNeuralNetwork:
 
     @staticmethod
